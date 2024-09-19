@@ -2,12 +2,10 @@ provider "aws" {
   region = var.region
 }
 
-data "aws_availability_zones" "available" {}
-
 module "vpc" {
   source               = "terraform-aws-modules/vpc/aws"
   version              = "2.77.0"
-  name                 = "tech-challenge-fiap-fase3"
+  name                 = "tech-challenge-fiap-fase3-vpc"
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   public_subnets       = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
@@ -16,16 +14,16 @@ module "vpc" {
 }
 
 resource "aws_db_subnet_group" "tech-challenge" {
-  name       = "tech-challenge-fiap-fase3"
+  name       = "tech-challenge-fiap-fase3-sub"
   subnet_ids = module.vpc.public_subnets
 
   tags = {
-    Name = "Tech Challenge Fase 3"
+    Name = "Tech Challenge Fase 3 Subnets"
   }
 }
 
 resource "aws_security_group" "rds" {
-  name   = "tech_challenge_fiap_fase3_rds"
+  name   = "tech-challenge-fiap-fase3-rds"
   vpc_id = module.vpc.vpc_id
 
   ingress {
@@ -43,12 +41,12 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    Name = "tech-challenge-fiap-fase3-rds"
+    Name = "Tech Challenge Fiap Fase 3 Security Group"
   }
 }
 
 resource "aws_db_parameter_group" "tech-challenge" {
-  name   = "tech-challenge-fiap-fase3"
+  name   = "tech-challenge-fiap-fase3-parameter-group"
   family = "postgres14"
 
   parameter {
@@ -58,7 +56,7 @@ resource "aws_db_parameter_group" "tech-challenge" {
 }
 
 resource "aws_db_instance" "tech-challenge" {
-  identifier             = "tech-challenge-fiap-fase3"
+  identifier             = "tech-challenge-fiap-fase3-rds"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   engine                 = "postgres"
