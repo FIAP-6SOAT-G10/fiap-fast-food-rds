@@ -61,13 +61,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: pull-request
-        uses: repo-sync/pull-request@v2.12.1
-        with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: "PR Automatica :rocket:"
-          pr_title: "Alteração de Infra"
+        run: |
+          gh_pr_up() { gh pr create $* || gh pr edit $* }
+          gh_pr_up --base main --label "PR Automatica :rocket:" --title "Alteração de Infra"
