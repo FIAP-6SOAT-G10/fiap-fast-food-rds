@@ -8,14 +8,14 @@ on:
       - alvesoliveirasolucoes/*
       - rafaelmesquitamoura/*
       - tgetnerski/*
+permissions:
+  contents: write
+  pull-requests: write
+  repository-projects: write
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      repository-projects: write
 
     steps:
       - name: Checkout code
@@ -65,7 +65,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: pull-request
-        uses: repo-sync/pull-request@v2
+        uses: repo-sync/pull-request@v2.12.1
         with:
           destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
