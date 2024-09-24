@@ -59,10 +59,16 @@ jobs:
   create-pull-request:
     needs: [terraform, validate]
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: pull-request
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up GitHub CLI
+        uses: actions/setup-gh-cli@v1
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh_pr_up() { gh pr create $* || gh pr edit $* }
-          gh_pr_up --title "Pull request automatico? " --body "Description"
-        shell: /usr/bin/bash -e {0}
+          gh pr create --base main --head ${{ github.ref_name }} --title "PR Automatica :rocket:" --body "Alteração de Infra" --label "PR Automatica :rocket:"
