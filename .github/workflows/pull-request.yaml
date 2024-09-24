@@ -64,24 +64,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Make Dummy Change if No Changes
-        run: |
-          if git diff --quiet; then
-            echo "No changes detected, making a dummy change."
-            date > dummy.txt
-            git add dummy.txt
-            git commit -m "Dummy change to ensure PR creation"
-          else
-            echo "Changes detected, proceeding."
-          fi
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
         with:
-          title: "Automated Pull Request"
-          body: "This pull request was automatically created by GitHub Actions."
-          labels: "automated-pr"
-          branch: ${{ github.ref_name }}  # Branch from which the PR is created
-          base: main  # Base branch for the PR
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          destination_branch: "main"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "PR Automatica :rocket:"
+          pr_title: "Alteração de Infra"
