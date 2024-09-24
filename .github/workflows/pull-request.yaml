@@ -63,13 +63,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          title: "Alteração de Infra"
-          labels: "PR Automatica :rocket:"
-          branch: ${{ github.ref_name }}  # Branch a partir da qual o PR será criado
-          base: main  # Base para a qual o PR será aberto
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: pull-request
+        run: |
+          gh_pr_up() { gh pr create $* || gh pr edit $* }
+          gh_pr_up --title "My pull request" --body "Description" --base main
