@@ -55,20 +55,37 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
         run: terraform plan
-        
+
+#  create-pull-request:
+#    needs: [terraform, validate]
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v4
+#
+#      - name: Create Pull Request
+#        uses: peter-evans/create-pull-request@v7
+#        with:
+#          base: ${{ github.head_ref }}
+#          token: ${{ inputs.github-token }}
+#          title: "Auto-generated PR"
+#          branch: "main"
+#          labels: "PR Automatica :rocket:"
+#
+
   create-pull-request:
     runs-on: ubuntu-latest
 
     env:
       BRANCH_MASTER: master
-      BRANCH_DEV: dev
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ inputs.github-token }}
 
       - name: Set up Git
         run: |
