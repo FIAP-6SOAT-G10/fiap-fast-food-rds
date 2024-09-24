@@ -68,5 +68,5 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           title: "Auto-generated PR"
-          base: "main"
+          branch: "main"
           labels: "PR Automatica :rocket:"
