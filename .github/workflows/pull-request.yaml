@@ -56,64 +56,20 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
         run: terraform plan
 
-#  create-pull-request:
-#    needs: [terraform, validate]
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
-#
-#      - name: Create Pull Request
-#        uses: peter-evans/create-pull-request@v7
-#        with:
-#          base: ${{ github.head_ref }}
-#          token: ${{ inputs.github-token }}
-#          title: "Auto-generated PR"
-#          branch: "main"
-#          labels: "PR Automatica :rocket:"
-#
-
   create-pull-request:
+    needs: [terraform, validate]
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      repository-projects: write
-
-    env:
-      BRANCH_MASTER: master
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
         with:
-          fetch-depth: 0
-          token: ${{ inputs.github-token }}
-
-      - name: Set up Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Fetch latest changes
-        run: git fetch origin
-
-      - name: Check for existing pull request
-        id: check-pr
-        run: |
-          PR_URL=$(gh pr list --base ${{ env.BRANCH_MASTER }} --json url --jq '.[0].url')
-          echo "PR_URL=${PR_URL}" >> $GITHUB_ENV
-
-      - name: Create or update pull request
-        run: |
-          if [ -z "${{ env.PR_URL }}" ]; then
-            echo "No existing pull request found. Creating a new one."
-            gh pr create --base ${{ env.BRANCH_MASTER }} \
-              --title "PR Automatica :rocket:" \
-              --body "PR Automatica :rocket:"
-          else
-            echo "Pull request already exists: ${{ env.PR_URL }}"
-            gh pr comment "${{ env.PR_URL }}" --body "New changes are pushed to master. Please review and merge."
-          fi
+          title: "Alteração de Infra"
+          labels: "PR Automatica :rocket:"
+          branch: main
+          base: ${{ inputs.base_branch }}
+        env:
+          GITHUB_TOKEN: ${{ inputs.githubtoken }}
