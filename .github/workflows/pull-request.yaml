@@ -62,13 +62,14 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up GitHub CLI
-        uses: cli/gh-action@v3
+        uses: actions/checkout@v4
 
       - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          title: "Alteração de Infra"
+          labels: "PR Automatica :rocket:"
+          branch: main
+          base: ${{ inputs.base_branch }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr create --base main --head ${{ github.ref_name }} --title "PR Automatica :rocket:" --body "Alteração de Infra" --label "PR Automatica :rocket:"
+          GITHUB_TOKEN: ${{ inputs.githubtoken }}
