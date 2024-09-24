@@ -8,10 +8,12 @@ on:
       - alvesoliveirasolucoes/*
       - rafaelmesquitamoura/*
       - tgetnerski/*
+
 permissions:
   contents: write
   pull-requests: write
   repository-projects: write
+  actions: write  # Add this line to grant actions permission
 
 jobs:
   validate:
