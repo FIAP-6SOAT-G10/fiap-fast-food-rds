@@ -69,7 +69,7 @@ jobs:
         with:
           title: "Alteração de Infra"
           labels: "PR Automatica :rocket:"
-        branch: ${{ github.ref_name }}  # Branch a partir da qual o PR será criado
-        base: main  # Base para a qual o PR será aberto
+          branch: ${{ github.ref_name }}  # Branch a partir da qual o PR será criado
+          base: main  # Base para a qual o PR será aberto
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
