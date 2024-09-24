@@ -67,6 +67,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
+          base: ${{ github.head_ref }}
           token: ${{ inputs.github-token }}
           title: "Auto-generated PR"
           branch: "main"
