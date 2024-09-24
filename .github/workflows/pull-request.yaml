@@ -59,10 +59,9 @@ jobs:
   create-pull-request:
     needs: [terraform, validate]
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: pull-request
         run: |
           gh_pr_up() { gh pr create $* || gh pr edit $* }
-          gh_pr_up --base main --label "PR Automatica :rocket:" --title "Alteração de Infra"
+          gh_pr_up --title "Pull request automatico? " --body "Description"
