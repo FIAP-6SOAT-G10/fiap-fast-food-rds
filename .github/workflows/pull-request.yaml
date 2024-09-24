@@ -55,20 +55,43 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
         run: terraform plan
-
+        
   create-pull-request:
-    needs: [terraform, validate]
     runs-on: ubuntu-latest
+
+    env:
+      BRANCH_MASTER: master
+      BRANCH_DEV: dev
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
         with:
-          base: ${{ github.head_ref }}
-          token: ${{ inputs.github-token }}
-          title: "Auto-generated PR"
-          branch: "main"
-          labels: "PR Automatica :rocket:"
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch latest changes
+        run: git fetch origin
+
+      - name: Check for existing pull request
+        id: check-pr
+        run: |
+          PR_URL=$(gh pr list --base ${{ env.BRANCH_MASTER }} --json url --jq '.[0].url')
+          echo "PR_URL=${PR_URL}" >> $GITHUB_ENV
+
+      - name: Create or update pull request
+        run: |
+          if [ -z "${{ env.PR_URL }}" ]; then
+            echo "No existing pull request found. Creating a new one."
+            gh pr create --base ${{ env.BRANCH_MASTER }} \
+              --title "PR Automatica :rocket:" \
+              --body "PR Automatica :rocket:"
+          else
+            echo "Pull request already exists: ${{ env.PR_URL }}"
+            gh pr comment "${{ env.PR_URL }}" --body "New changes are pushed to master. Please review and merge."
+          fi
