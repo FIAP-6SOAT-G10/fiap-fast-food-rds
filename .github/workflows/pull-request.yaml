@@ -67,9 +67,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          title: "Alteração de Infra"
+          title: "Auto-generated PR"
+          base: "main"
           labels: "PR Automatica :rocket:"
-          branch: main
-          base: ${{ inputs.base_branch }}
-        env:
-          GITHUB_TOKEN: ${{ inputs.githubtoken }}
