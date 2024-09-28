@@ -56,7 +56,7 @@ resource "aws_db_parameter_group" "tech-challenge" {
 }
 
 resource "aws_db_instance" "tech-challenge" {
-  identifier             = "tech-challenge-fiap-fase3-rds"
+  identifier             = "db-fiap-fast-food"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   engine                 = "postgres"
