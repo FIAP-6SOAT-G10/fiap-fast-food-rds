@@ -10,7 +10,7 @@ variable "db_user" {
 }
 
 variable "db_password" {
-  description = "RDS root user password"
+  description = "RDS password"
   type        = string
   default     = "tech_passwd"
 }
