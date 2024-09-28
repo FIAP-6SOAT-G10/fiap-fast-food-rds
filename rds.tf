@@ -56,13 +56,13 @@ resource "aws_db_parameter_group" "tech-challenge" {
 }
 
 resource "aws_db_instance" "tech-challenge" {
-  identifier             = "tech-challenge-fiap-fase3-rds"
+  identifier             = "db-fiap-fast-food"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   engine                 = "postgres"
   engine_version         = 14.9
-  username               = "postgres"
-  password               = "postgres"
+  username               = var.db_user
+  password               = var.db_password
   db_subnet_group_name   = aws_db_subnet_group.tech-challenge.name
   vpc_security_group_ids = [aws_security_group.rds.id]
   parameter_group_name   = aws_db_parameter_group.tech-challenge.name

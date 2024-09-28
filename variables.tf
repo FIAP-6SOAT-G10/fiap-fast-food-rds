@@ -3,14 +3,14 @@ variable "region" {
   description = "AWS region"
 }
 
-variable "db_password" {
-  description = "RDS root user password"
-  type        = string
-  default = "tech_passwd"
-}
-
 variable "db_user" {
   type        = string
   description = "RDS user"
-  default = "tech"
+  default     = "tech"
+}
+
+variable "db_password" {
+  description = "RDS password"
+  type        = string
+  default     = "tech_passwd"
 }
