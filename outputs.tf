@@ -1,5 +1,5 @@
 output "rds_hostname" {
-  description = "RDS instance hostname"
+  description = "RDS instance hostname fiap"
   value       = aws_db_instance.tech-challenge.address
 }
 
