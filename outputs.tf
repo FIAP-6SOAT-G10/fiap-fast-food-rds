@@ -6,7 +6,6 @@ output "rds_hostname" {
 output "rds_port" {
   description = "RDS instance port"
   value       = aws_db_instance.tech-challenge.port
-  sensitive   = true
 }
 
 output "rds_username" {
